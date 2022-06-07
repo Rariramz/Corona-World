@@ -1,5 +1,5 @@
 import logo from "./logo.svg";
-import Earth from "./three/earth.js";
+import Earth from "./three/Earth.js";
 import "./style.css";
 
 function App() {

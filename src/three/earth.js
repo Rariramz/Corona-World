@@ -6,21 +6,46 @@ class Earth extends Component {
   componentDidMount() {
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(
-      75,
+      45,
       window.innerWidth / window.innerHeight,
       0.1,
       1000
     );
+    camera.position.set(0, 0, 10);
+    camera.lookAt(0, 0, 0);
     const renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
     this.mount.appendChild(renderer.domElement);
+    const controls = new OrbitControls(camera, renderer.domElement);
 
     const geometry = new THREE.BoxGeometry(1, 1, 1);
     const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
     const cube = new THREE.Mesh(geometry, material);
     scene.add(cube);
 
-    camera.position.z = 5;
+    const materialX = new THREE.LineBasicMaterial({ color: "blue" });
+    const geometryX = new THREE.BufferGeometry().setFromPoints([
+      new THREE.Vector3(0, 0, 0),
+      new THREE.Vector3(100, 0, 0),
+    ]);
+    const lineX = new THREE.Line(geometryX, materialX);
+    scene.add(lineX);
+
+    const materialY = new THREE.LineBasicMaterial({ color: "yellow" });
+    const geometryY = new THREE.BufferGeometry().setFromPoints([
+      new THREE.Vector3(0, 0, 0),
+      new THREE.Vector3(0, 100, 0),
+    ]);
+    const lineY = new THREE.Line(geometryY, materialY);
+    scene.add(lineY);
+
+    const materialZ = new THREE.LineBasicMaterial({ color: "coral" });
+    const geometryZ = new THREE.BufferGeometry().setFromPoints([
+      new THREE.Vector3(0, 0, 0),
+      new THREE.Vector3(0, 0, 100),
+    ]);
+    const lineZ = new THREE.Line(geometryZ, materialZ);
+    scene.add(lineZ);
 
     const animate = () => {
       requestAnimationFrame(animate);
