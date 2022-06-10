@@ -15,11 +15,12 @@ class Earth extends Component {
     camera.lookAt(0, 0, 0);
     const renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(0x000000, 0);
     this.mount.appendChild(renderer.domElement);
     const controls = new OrbitControls(camera, renderer.domElement);
 
     const geometry = new THREE.BoxGeometry(1, 1, 1);
-    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+    const material = new THREE.MeshBasicMaterial({ color: "grey" });
     const cube = new THREE.Mesh(geometry, material);
     scene.add(cube);
 
@@ -57,7 +58,7 @@ class Earth extends Component {
   }
 
   render() {
-    return <div ref={(ref) => (this.mount = ref)}></div>;
+    return <div className="canvas" ref={(ref) => (this.mount = ref)}></div>;
   }
 }
 
