@@ -1,15 +1,18 @@
 import logo from "./logo.svg";
 import Earth from "./three/Earth.js";
+import "./nullstyle.css";
 import "./style.css";
 import GlobalTotals from "./components/GlobalTotals";
-import CountryTotals from "./components/CountryTotals";
+import CountryInfo from "./components/CountryInfo";
+import TestButtons from "./components/TestButtons";
 
 function App() {
   return (
     <>
       <GlobalTotals />
-      <CountryTotals country={"china"} />
-      <Earth />;
+      <CountryInfo />
+      <Earth />
+      {/* <TestButtons /> */}
     </>
   );
 }
