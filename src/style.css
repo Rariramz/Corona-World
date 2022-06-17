@@ -28,6 +28,11 @@ body {
   left: 50px;
 }
 
+.continentInfo__column {
+  position: absolute;
+  right: 50px;
+}
+
 .column {
   height: 100%;
   display: flex;
@@ -126,7 +131,8 @@ body {
   margin-right: 8px;
 }
 
-.country-name {
+.country-name,
+.continent-name {
   font-size: 18px;
   font-weight: 500;
 }

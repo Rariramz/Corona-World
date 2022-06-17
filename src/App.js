@@ -1,18 +1,19 @@
-import logo from "./logo.svg";
 import Earth from "./three/Earth.js";
 import "./nullstyle.css";
 import "./style.css";
-import GlobalTotals from "./components/GlobalTotals";
-import CountryInfo from "./components/CountryInfo";
+import GlobalCard from "./components/GlobalCard";
+import CountryCard from "./components/CountryCard";
 import TestButtons from "./components/TestButtons";
+import ContinentCard from "./components/ContinentCard.js";
 
 function App() {
   return (
     <>
-      <GlobalTotals />
-      <CountryInfo />
+      <GlobalCard />
+      <TestButtons />
+      <CountryCard />
+      <ContinentCard />
       <Earth />
-      {/* <TestButtons /> */}
     </>
   );
 }

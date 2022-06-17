@@ -1,17 +1,21 @@
 import React, { Component } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import ThreeGlobe from "three-globe";
+import earthImg from "../images/earth-blue-marble.jpg";
 
 class Earth extends Component {
   componentDidMount() {
     const scene = new THREE.Scene();
+    scene.add(new THREE.AmbientLight(0xbbbbbb));
+    scene.add(new THREE.DirectionalLight(0xffffff, 0.6));
     const camera = new THREE.PerspectiveCamera(
       45,
       window.innerWidth / window.innerHeight,
       0.1,
       1000
     );
-    camera.position.set(0, 0, 10);
+    camera.position.set(0, 0, 400);
     camera.lookAt(0, 0, 0);
     const renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -19,10 +23,15 @@ class Earth extends Component {
     this.mount.appendChild(renderer.domElement);
     const controls = new OrbitControls(camera, renderer.domElement);
 
-    const geometry = new THREE.BoxGeometry(1, 1, 1);
-    const material = new THREE.MeshBasicMaterial({ color: "grey" });
-    const cube = new THREE.Mesh(geometry, material);
-    scene.add(cube);
+    // const geometry = new THREE.SphereGeometry(1, 360, 180);
+    // const material = new THREE.MeshBasicMaterial({ color: 0xffff00 });
+    // const sphere = new THREE.Mesh(geometry, material);
+    // scene.add(sphere);
+    const globe = new ThreeGlobe()
+      .globeImageUrl(earthImg)
+      .showGlobe(true)
+      .showGraticules(true);
+    scene.add(globe);
 
     const materialX = new THREE.LineBasicMaterial({ color: "blue" });
     const geometryX = new THREE.BufferGeometry().setFromPoints([
@@ -50,8 +59,8 @@ class Earth extends Component {
 
     const animate = () => {
       requestAnimationFrame(animate);
-      cube.rotation.x += 0.01;
-      cube.rotation.y += 0.01;
+      // globe.rotation.x += 0.01;
+      // globe.rotation.y += 0.01;
       renderer.render(scene, camera);
     };
     animate();

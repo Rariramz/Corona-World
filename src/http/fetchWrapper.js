@@ -1,11 +1,11 @@
-export const get = async (url, callback) => {
-  fetchWrapper("GET", url, callback);
+export const get = async (url) => {
+  fetchWrapper("GET", url);
 };
-export const post = async (url, callback, obj) => {
-  fetchWrapper("GET", url, callback, obj);
+export const post = async (url, obj) => {
+  fetchWrapper("GET", url, obj);
 };
 
-const fetchWrapper = async (method, url, callback, obj) => {
+const fetchWrapper = async (method, url, obj) => {
   try {
     let formData = new FormData();
     let res;
@@ -28,10 +28,10 @@ const fetchWrapper = async (method, url, callback, obj) => {
     if (res.ok) {
       // console.log(res);
       if ([204, 400].includes(res.status)) {
-        callback({ invalid: true });
+        return { invalid: true };
       }
       const json = await res.json();
-      callback(json);
+      return json;
     }
   } catch (e) {
     // console.error(e);

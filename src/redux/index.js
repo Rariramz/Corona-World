@@ -1,10 +1,12 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import countryReducer from "./countryReducer";
-import globalReducer from "./globalReducer";
+import globalSlice from "./global/globalSlice.js";
+import continentSlice from "./continent/continentSlice.js";
+import countrySlice from "./country/countrySlice.js";
 
 const rootReducer = combineReducers({
-  global: globalReducer,
-  country: countryReducer,
+  global: globalSlice,
+  continent: continentSlice,
+  country: countrySlice,
 });
 
 export const store = configureStore({
