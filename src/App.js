@@ -1,4 +1,4 @@
-import Earth from "./three/Earth.js";
+import Earth from "./three/earth.js";
 import "./nullstyle.css";
 import "./style.css";
 import GlobalCard from "./components/GlobalCard";

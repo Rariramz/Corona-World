@@ -19,11 +19,7 @@ export const fetchContinentData = createAsyncThunk(
 const continentSlice = createSlice({
   name: "continent",
   initialState,
-  reducers: {
-    setReduxContinentName(state, action) {
-      state.continentName = action.payload;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchContinentData.pending, (state) => {
       state.status = "loading";
@@ -40,5 +36,5 @@ const continentSlice = createSlice({
   },
 });
 
-export const { setReduxContinentName } = continentSlice.actions;
+export const {} = continentSlice.actions;
 export default continentSlice.reducer;

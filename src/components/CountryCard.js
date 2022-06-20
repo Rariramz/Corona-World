@@ -1,100 +1,69 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import {
-  fetchCountryData,
-  setReduxCountryName,
-} from "../redux/country/countrySlice.js";
+import { fetchCountryData } from "../redux/country/countrySlice.js";
 
 import casesImg from "../images/coronavirus.png";
 import deathsImg from "../images/skull.png";
 import recoveredImg from "../images/heart.png";
+import warningImg from "../images/warning.png";
 
 import {
-  useCountryName,
   useCountryTotals,
   useCountryError,
 } from "../redux/country/countrySelectors.js";
 
 const CountryCard = () => {
-  const dispatch = useDispatch();
-  const countryName = useCountryName();
   const countryTotals = useCountryTotals();
   const countryError = useCountryError();
 
-  useEffect(() => {
-    dispatch(setReduxCountryName(localStorage.getItem("countryName")));
-  }, []);
-
-  useEffect(() => {
-    if (countryName) dispatch(fetchCountryData(countryName));
-  }, [countryName]);
-
-  // const selectCountryParams = createSelector(
-  //   (state) => state.country.countryTotals,
-  //   (country) => ({
-  //     active: country.active,
-  //     cases: country.cases,
-  //     country: country.country,
-  //     countryInfo: country.countryInfo,
-  //     deaths: country.deaths,
-  //     population: country.population,
-  //     recovered: country.recovered,
-  //     tests: country.tests,
-  //     todayCases: country.todayCases,
-  //     todayDeaths: country.todayDeaths,
-  //     todayRecovered: country.todayRecovered,
-  //   })
-  // );
-
-  return countryName && !countryError ? (
+  return countryTotals && !countryError ? (
     <div className="countryInfo__column column">
       <div className="vertical-panel panel">
         <div className="vertical-panel__point point">
           <div className="point__img country-flag__mask">
             <img
               className="country-flag__img"
-              src={countryTotals?.countryInfo.flag}
+              src={countryTotals.countryInfo.flag}
             />
           </div>
           <div className="point__title point__title_high country-name">
-            {countryTotals?.country.toUpperCase()}
+            {countryTotals.country.toUpperCase()}
           </div>
         </div>
         <div className="vertical-panel__point point">
           <div className="row">
             <div className="point__title">population:&nbsp;</div>
             <div className="point__info">
-              {countryTotals?.population.toLocaleString()}
+              {countryTotals.population.toLocaleString()}
             </div>
           </div>
           <div className="row">
             <div className="point__title">active:&nbsp;</div>
             <div className="point__info">
-              {countryTotals?.active.toLocaleString()}
+              {countryTotals.active.toLocaleString()}
             </div>
           </div>
           <div className="row">
             <div className="point__title">tests:&nbsp;</div>
             <div className="point__info">
-              {countryTotals?.tests.toLocaleString()}
+              {countryTotals.tests.toLocaleString()}
             </div>
           </div>
           <div className="row">
             <div className="point__title">today cases:&nbsp;</div>
             <div className="point__info">
-              {countryTotals?.todayCases.toLocaleString()}
+              {countryTotals.todayCases.toLocaleString()}
             </div>
           </div>
           <div className="row">
             <div className="point__title">today deaths:&nbsp;</div>
             <div className="point__info">
-              {countryTotals?.todayDeaths.toLocaleString()}
+              {countryTotals.todayDeaths.toLocaleString()}
             </div>
           </div>
           <div className="row">
             <div className="point__title">today recovered:&nbsp;</div>
             <div className="point__info">
-              {countryTotals?.todayRecovered.toLocaleString()}
+              {countryTotals.todayRecovered.toLocaleString()}
             </div>
           </div>
         </div>
@@ -102,7 +71,7 @@ const CountryCard = () => {
           <div className="row">
             <img className="row__img point__img" src={casesImg} alt="icon" />
             <div className="point__info point__info_red">
-              {countryTotals?.cases.toLocaleString()}
+              {countryTotals.cases.toLocaleString()}
             </div>
           </div>
         </div>
@@ -110,7 +79,7 @@ const CountryCard = () => {
           <div className="row">
             <img className="row__img point__img" src={deathsImg} alt="icon" />
             <div className="point__info point__info_red">
-              {countryTotals?.deaths.toLocaleString()}
+              {countryTotals.deaths.toLocaleString()}
             </div>
           </div>
         </div>
@@ -122,7 +91,7 @@ const CountryCard = () => {
               alt="icon"
             />
             <div className="point__info point__info_red">
-              {countryTotals?.recovered.toLocaleString()}
+              {countryTotals.recovered.toLocaleString()}
             </div>
           </div>
         </div>
@@ -133,7 +102,12 @@ const CountryCard = () => {
       <div className="vertical-panel panel">
         <div className="vertical-panel__point point">
           <div className="row">
-            <div className="point__info">{countryError?.message}</div>
+            <img className="row__img point__img" src={warningImg} alt="icon" />
+            {countryError ? (
+              <div className="point__info">{countryError.message}</div>
+            ) : (
+              <div className="point__info">Choose country</div>
+            )}
           </div>
         </div>
       </div>

@@ -2,11 +2,6 @@ import { createSelector } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
 import { getContinentState } from "./continentStateAPI.js";
 
-const storeContinentName = createSelector(
-  getContinentState,
-  (state) => state.continentName
-);
-
 const storeContinentTotals = createSelector(
   getContinentState,
   (state) => state.continentTotals
@@ -14,9 +9,8 @@ const storeContinentTotals = createSelector(
 
 const storeContinentError = createSelector(
   getContinentState,
-  (state) => state.continentError
+  (state) => state.error
 );
 
-export const useContinentName = () => useSelector(storeContinentName);
 export const useContinentTotals = () => useSelector(storeContinentTotals);
 export const useContinentError = () => useSelector(storeContinentError);

@@ -12,6 +12,7 @@
     "react-dom": "^18.1.0",
     "react-redux": "^8.0.2",
     "react-scripts": "5.0.1",
+    "redux-persist": "^6.0.0",
     "three": "^0.141.0",
     "three-globe": "^2.24.5",
     "web-vitals": "^2.1.4"

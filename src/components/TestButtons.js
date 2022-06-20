@@ -1,20 +1,18 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { setReduxContinentName } from "../redux/continent/continentSlice.js";
-import { setReduxCountryName } from "../redux/country/countrySlice.js";
+import { useDispatch } from "react-redux";
+import { fetchContinentData } from "../redux/continent/continentSlice.js";
+import { fetchCountryData } from "../redux/country/countrySlice.js";
 
 const TestButtons = () => {
   const dispatch = useDispatch();
 
   const handlerCountry = (e) => {
     const countryName = e.target.innerText;
-    localStorage.setItem("countryName", countryName);
-    dispatch(setReduxCountryName(localStorage.getItem("countryName")));
+    dispatch(fetchCountryData(countryName));
   };
   const handlerContinent = (e) => {
     const continentName = e.target.innerText;
-    localStorage.setItem("continentName", continentName);
-    dispatch(setReduxContinentName(localStorage.getItem("continentName")));
+    dispatch(fetchContinentData(continentName));
   };
   return (
     <div className="row">
@@ -26,7 +24,7 @@ const TestButtons = () => {
           color: "#ffffff",
           position: "absolute",
           left: "50px",
-          top: "-400px",
+          top: "-200px",
         }}
       >
         <button onClick={(e) => handlerCountry(e)}>Belarus</button>

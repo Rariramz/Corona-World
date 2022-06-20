@@ -1,22 +1,27 @@
-import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { fetchGlobalData } from "../redux/global/globalSlice.js";
+import { React, useEffect } from "react";
+import { useDispatch } from "react-redux";
 
 import casesImg from "../images/coronavirus.png";
 import deathsImg from "../images/skull.png";
 import recoveredImg from "../images/heart.png";
-import { useGlobalTotals } from "../redux/global/globalSelectors.js";
+import warningImg from "../images/warning.png";
+
+import {
+  useGlobalError,
+  useGlobalTotals,
+} from "../redux/global/globalSelectors.js";
+import { fetchGlobalData } from "../redux/global/globalSlice.js";
 
 const GlobalCard = () => {
   const dispatch = useDispatch();
-  const storeGlobalTotals = useSelector((state) => state.global.globalTotals);
   const globalTotals = useGlobalTotals();
+  const globalError = useGlobalError();
 
   useEffect(() => {
     dispatch(fetchGlobalData());
   }, []);
 
-  return (
+  return globalTotals && !globalError ? (
     <div className="globalInfo__row row">
       <div className="horizontal-panel panel">
         <div className="horizontal-panel__point point">
@@ -25,7 +30,7 @@ const GlobalCard = () => {
             <div className="point__title point__title_high">CASES</div>
           </div>
           <div className="point__info point__info_red">
-            {globalTotals?.cases.toLocaleString()}
+            {globalTotals.cases.toLocaleString()}
           </div>
         </div>
         <div className="horizontal-panel__point point">
@@ -34,7 +39,7 @@ const GlobalCard = () => {
             <div className="point__title point__title_high">DEATHS</div>
           </div>
           <div className="point__info point__info_red">
-            {globalTotals?.deaths.toLocaleString()}
+            {globalTotals.deaths.toLocaleString()}
           </div>
         </div>
         <div className="horizontal-panel__point point">
@@ -47,7 +52,24 @@ const GlobalCard = () => {
             <div className="point__title point__title_high">RECOVERED</div>
           </div>
           <div className="point__info point__info_red">
-            {globalTotals?.recovered.toLocaleString()}
+            {globalTotals.recovered.toLocaleString()}
+          </div>
+        </div>
+      </div>
+    </div>
+  ) : (
+    <div className="globalInfo__row row">
+      <div className="horizontal-panel panel">
+        <div className="horizontal-panel__point point">
+          <div className="row">
+            <img className="row__img point__img" src={warningImg} alt="icon" />
+            {globalError ? (
+              <div className="point__info">{globalError.message}</div>
+            ) : (
+              <div className="point__info">
+                Global statistics are temporarily unavailable
+              </div>
+            )}
           </div>
         </div>
       </div>
