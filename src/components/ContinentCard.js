@@ -7,10 +7,21 @@ import {
   useContinentError,
   useContinentTotals,
 } from "../redux/continent/continentSelectors.js";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchContinentData } from "../redux/continent/continentSlice";
 
 const ContinentCard = () => {
+  const dispatch = useDispatch();
+  const continentName = useSelector(
+    (state) => state.userSelected.continentName
+  );
   const continentTotals = useContinentTotals();
   const continentError = useContinentError();
+
+  useEffect(() => {
+    continentName && dispatch(fetchContinentData(continentName));
+  }, [continentName]);
 
   return continentTotals && !continentError ? (
     <div className="continentInfo__column column">

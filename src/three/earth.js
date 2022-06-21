@@ -1,8 +1,11 @@
 import React, { Component } from "react";
 import * as THREE from "three";
+import { InteractionManager } from "three.interactive";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import ThreeGlobe from "three-globe";
 import earthImg from "../images/earth-blue-marble.jpg";
+import worldGeo from "../geojson/countries.js";
+import { countryLine } from "./countryLine";
 
 class Earth extends Component {
   componentDidMount() {
@@ -23,15 +26,37 @@ class Earth extends Component {
     this.mount.appendChild(renderer.domElement);
     const controls = new OrbitControls(camera, renderer.domElement);
 
+    const interactionManager = new InteractionManager(
+      renderer,
+      camera,
+      renderer.domElement
+    );
+
     const globe = new ThreeGlobe()
       .globeImageUrl(earthImg)
       .showGlobe(true)
       .showGraticules(true);
     scene.add(globe);
 
+    worldGeo.features.forEach((country) => {
+      if (country.geometry.type === "Polygon") {
+        country.geometry.coordinates = [country.geometry.coordinates];
+      }
+      const countryArea = countryLine(country.geometry.coordinates);
+
+      countryArea.addEventListener("click", (event) => {
+        // ONLY LINES! NEED AREA
+        alert("YES");
+      });
+
+      scene.add(countryArea);
+      interactionManager.add(countryArea);
+    });
+
     const animate = () => {
       requestAnimationFrame(animate);
-      globe.rotation.y -= 0.001;
+      // globe.rotation.y -= 0.001;
+      interactionManager.update();
       renderer.render(scene, camera);
     };
     animate();

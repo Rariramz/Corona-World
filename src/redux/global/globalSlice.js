@@ -4,7 +4,7 @@ import { initialState } from "./initialState";
 const URL = "https://disease.sh/v3/covid-19/";
 export const fetchGlobalData = createAsyncThunk(
   "global/fetchGlobalData",
-  async (idleParam, { rejectWithValue }) => {
+  async (_, { rejectWithValue }) => {
     try {
       const res = await fetch(URL + "all");
       const data = await res.json();

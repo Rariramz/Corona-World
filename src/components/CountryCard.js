@@ -10,10 +10,17 @@ import {
   useCountryTotals,
   useCountryError,
 } from "../redux/country/countrySelectors.js";
+import { useDispatch, useSelector } from "react-redux";
 
 const CountryCard = () => {
+  const dispatch = useDispatch();
+  const countryName = useSelector((state) => state.userSelected.countryName);
   const countryTotals = useCountryTotals();
   const countryError = useCountryError();
+
+  useEffect(() => {
+    countryName && dispatch(fetchCountryData(countryName));
+  }, [countryName]);
 
   return countryTotals && !countryError ? (
     <div className="countryInfo__column column">
