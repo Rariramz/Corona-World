@@ -4,8 +4,8 @@ import { InteractionManager } from "three.interactive";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import ThreeGlobe from "three-globe";
 import earthImg from "../images/earth-blue-marble.jpg";
-import worldGeo from "../geojson/countries.js";
-import { countryLine } from "./countryLine";
+import worldGeo from "../geojson/test.js";
+import { getThreeJsCountry } from "./countryLine";
 
 class Earth extends Component {
   componentDidMount() {
@@ -24,7 +24,10 @@ class Earth extends Component {
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setClearColor(0x000000, 0);
     this.mount.appendChild(renderer.domElement);
+
     const controls = new OrbitControls(camera, renderer.domElement);
+    controls.maxDistance = 400;
+    controls.minDistance = 200;
 
     const interactionManager = new InteractionManager(
       renderer,
@@ -42,11 +45,10 @@ class Earth extends Component {
       if (country.geometry.type === "Polygon") {
         country.geometry.coordinates = [country.geometry.coordinates];
       }
-      const countryArea = countryLine(country.geometry.coordinates);
+      const countryArea = getThreeJsCountry(country.geometry.coordinates);
 
       countryArea.addEventListener("click", (event) => {
-        // ONLY LINES! NEED AREA
-        alert("YES");
+        // alert("YES");
       });
 
       scene.add(countryArea);

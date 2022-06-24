@@ -4,12 +4,12 @@ import { coronavirusApi } from "./coronavirusApi.js";
 
 export const store = configureStore({
   reducer: {
-    [pokemonApi.reducerPath]: pokemonApi.reducer,
+    [coronavirusApi.reducerPath]: coronavirusApi.reducer,
   },
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(pokemonApi.middleware),
+    getDefaultMiddleware().concat(coronavirusApi.middleware),
 });
 
 // optional, but required for refetchOnFocus/refetchOnReconnect behaviors

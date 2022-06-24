@@ -1,4 +1,4 @@
-const R = 100;
+const R = 102;
 
 export const lon2xyz = (longitude, latitude) => {
   const lon = (longitude * Math.PI) / 180;
