@@ -2,13 +2,23 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import earthImg from "../images/earth-blue-marble.jpg";
 import earthDayImg from "../images/earth-day.jpg";
-import earthOutlineGrayImg from "../images/earth-outline-shifted-gray.png";
+import earthCountriesShadesImg from "../images/earth-index-shifted-gray.png";
+import earthCountriesOutlinesImg from "../images/earth-outline-shifted-gray.png";
 import ThreeJS from "../threejs/ThreeJS";
 import { vertexShader } from "../threejs/shaders/vertex.js";
 import { fragmentShader } from "../threejs/shaders/fragment.js";
 import { countryColorMap } from "../threejs/countryColorMap.js";
+import { useDispatch } from "react-redux";
+import {
+  setContinentName,
+  setCountryName,
+} from "../redux/userSelected/userSelectedSlice.js";
+import countriesJson from "../geojson/world";
+import countriesContinentsJson from "../geojson/countries&continents";
 
 const Canvas = () => {
+  const dispatch = useDispatch();
+
   // реф для ссылки на контейнер для монтажа canvas
   const canvasContainer = useRef(null);
 
@@ -48,15 +58,17 @@ const Canvas = () => {
     lookupTexture.minFilter = THREE.NearestFilter;
     lookupTexture.needsUpdate = true;
 
-    const mapTexture = new THREE.TextureLoader().load(earthOutlineGrayImg);
+    const mapTexture = new THREE.TextureLoader().load(earthCountriesShadesImg);
     mapTexture.magFilter = THREE.NearestFilter;
     mapTexture.minFilter = THREE.NearestFilter;
     mapTexture.needsUpdate = true;
 
-    const outlineTexture = new THREE.TextureLoader().load(earthOutlineGrayImg);
+    const outlineTexture = new THREE.TextureLoader().load(
+      earthCountriesOutlinesImg
+    );
     outlineTexture.needsUpdate = true;
 
-    const blendImage = new THREE.TextureLoader().load(earthDayImg);
+    const blendImage = new THREE.TextureLoader().load(earthImg);
 
     const planeMaterial = new THREE.ShaderMaterial({
       uniforms: {
@@ -87,7 +99,7 @@ const Canvas = () => {
     imageObj.onload = function () {
       mapContext.drawImage(imageObj, 0, 0);
     };
-    imageObj.src = earthOutlineGrayImg;
+    imageObj.src = earthCountriesShadesImg;
 
     window.addEventListener("mousedown", onMouseClick, false);
 
@@ -96,7 +108,6 @@ const Canvas = () => {
         { x: event.clientX, y: event.clientY },
         mesh
       );
-      console.log(intersectionList);
       let countryCode = -1;
       if (intersectionList.length > 0) {
         const data = intersectionList[0];
@@ -108,12 +119,31 @@ const Canvas = () => {
         const p = mapContext.getImageData(u, v, 1, 1).data;
         countryCode = p[0];
 
-        for (const prop in countryColorMap) {
-          if (countryColorMap.hasOwnProperty(prop)) {
-            if (countryColorMap[prop] === countryCode)
-              console.log(prop, countryCode);
+        let ISO_A2 = "";
+        for (let key in countryColorMap) {
+          if (countryColorMap[key] === countryCode) {
+            console.log(`${key}: ${countryCode}`);
+            ISO_A2 = key;
           }
         } // end for loop
+
+        const countryObj = countriesJson.features.filter(
+          (obj) => obj.properties.ISO_A2 === ISO_A2
+        )[0];
+        if (countryObj) {
+          const countryName = countryObj.properties.NAME_LONG;
+          console.log("COUNTRY NAME:", countryName);
+          dispatch(setCountryName(countryName));
+
+          const continentObj = countriesContinentsJson.filter(
+            (obj) => obj.country === countryName
+          )[0];
+          if (continentObj) {
+            const continentName = continentObj.continent;
+            console.log("CONTINENT NAME:", continentName);
+            dispatch(setContinentName(continentName));
+          }
+        }
 
         lookupContext.clearRect(0, 0, 256, 1);
 
