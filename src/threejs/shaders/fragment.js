@@ -15,5 +15,5 @@ export const fragmentShader = `
     // if (outlineColor.x > 0.1) outlineColor = vec4(1.0,1.0,1.0,1.0);
 
     
-    gl_FragColor = 0.5 * outlineColor + 1.0 * lookupColor + 0.5 * blendColor;
-  }`
+    gl_FragColor = 0.99 * outlineColor + 1.0 * lookupColor + 0.99 * blendColor;
+  }`;

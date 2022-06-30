@@ -13,8 +13,8 @@ import {
   setContinentName,
   setCountryName,
 } from "../redux/userSelected/userSelectedSlice.js";
-import countriesJson from "../geojson/world";
-import countriesContinentsJson from "../geojson/countries&continents";
+import countryByCode from "../geojson/countryByCode";
+import countryByContinent from "../geojson/countryByContinent";
 
 const Canvas = () => {
   const dispatch = useDispatch();
@@ -108,7 +108,7 @@ const Canvas = () => {
         { x: event.clientX, y: event.clientY },
         mesh
       );
-      let countryCode = -1;
+      let countryId = -1;
       if (intersectionList.length > 0) {
         const data = intersectionList[0];
         const d = data.point.clone().normalize();
@@ -117,25 +117,25 @@ const Canvas = () => {
         );
         const v = Math.round(2048 * (0.5 - Math.asin(d.y) / Math.PI));
         const p = mapContext.getImageData(u, v, 1, 1).data;
-        countryCode = p[0];
+        countryId = p[0];
 
-        let ISO_A2 = "";
+        let countryCode = "";
         for (let key in countryColorMap) {
-          if (countryColorMap[key] === countryCode) {
-            console.log(`${key}: ${countryCode}`);
-            ISO_A2 = key;
+          if (countryColorMap[key] === countryId) {
+            console.log(`${key}: ${countryId}`);
+            countryCode = key;
           }
         } // end for loop
 
-        const countryObj = countriesJson.features.filter(
-          (obj) => obj.properties.ISO_A2 === ISO_A2
+        const countryObj = countryByCode.filter(
+          (obj) => obj.abbreviation === countryCode
         )[0];
         if (countryObj) {
-          const countryName = countryObj.properties.NAME_LONG;
+          const countryName = countryObj.country;
           console.log("COUNTRY NAME:", countryName);
           dispatch(setCountryName(countryName));
 
-          const continentObj = countriesContinentsJson.filter(
+          const continentObj = countryByContinent.filter(
             (obj) => obj.country === countryName
           )[0];
           if (continentObj) {
@@ -149,7 +149,7 @@ const Canvas = () => {
 
         for (let i = 0; i < 228; i++) {
           if (i == 0) lookupContext.fillStyle = "rgba(0,0,0,1.0)";
-          else if (i == countryCode)
+          else if (i == countryId)
             lookupContext.fillStyle = "rgba(50,50,0,0.5)";
           else lookupContext.fillStyle = "rgba(0,0,0,1.0)";
 

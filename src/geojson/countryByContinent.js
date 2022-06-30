@@ -712,7 +712,7 @@ export default [
     continent: "Europe",
   },
   {
-    country: "Russia",
+    country: "Russian Federation",
     continent: "Europe",
   },
   {
