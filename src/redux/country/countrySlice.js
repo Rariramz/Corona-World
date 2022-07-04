@@ -1,41 +1,15 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { initialState } from "./initialState";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-const URL = "https://disease.sh/v3/covid-19/";
-export const fetchCountryData = createAsyncThunk(
-  "country/fetchCountryData",
-  async (countryName, { rejectWithValue }) => {
-    try {
-      const res = await fetch(URL + `countries/${countryName}`);
-      const data = await res.json();
-      if (res.status === 404) return rejectWithValue(data);
-      return data;
-    } catch (err) {
-      return rejectWithValue(err);
-    }
-  }
-);
-
-const countrySlice = createSlice({
-  name: "country",
-  initialState,
-  reducers: {},
-  extraReducers: (builder) => {
-    builder.addCase(fetchCountryData.pending, (state) => {
-      state.status = "loading";
-      state.error = null;
-    });
-    builder.addCase(fetchCountryData.fulfilled, (state, action) => {
-      state.status = "resolved";
-      state.countryTotals = action.payload;
-    });
-    builder.addCase(fetchCountryData.rejected, (state, action) => {
-      state.status = "rejected";
-      state.error = action.payload;
-      state.countryTotals = null;
-    });
-  },
+const countrySlice = createApi({
+  reducerPath: "country",
+  baseQuery: fetchBaseQuery({ baseUrl: "https://disease.sh/v3/covid-19/" }),
+  endpoints: (build) => ({
+    getCountryData: build.query({
+      query: (name) => ({ url: `countries/${name}` }),
+    }),
+  }),
 });
 
-export const {} = countrySlice.actions;
-export default countrySlice.reducer;
+export default countrySlice;
+
+export const { useGetCountryDataQuery } = countrySlice;

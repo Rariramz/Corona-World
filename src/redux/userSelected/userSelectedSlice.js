@@ -15,4 +15,4 @@ const userSelected = createSlice({
 });
 
 export const { setContinentName, setCountryName } = userSelected.actions;
-export default userSelected.reducer;
+export default userSelected;

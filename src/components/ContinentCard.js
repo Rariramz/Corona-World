@@ -3,69 +3,63 @@ import deathsImg from "../images/skull.png";
 import recoveredImg from "../images/heart.png";
 import warningImg from "../images/warning.png";
 
-import {
-  useContinentError,
-  useContinentTotals,
-} from "../redux/continent/continentSelectors.js";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchContinentData } from "../redux/continent/continentSlice";
+import { useSelector } from "react-redux";
+import { useGetContinentDataQuery } from "../redux/continent/continentSlice";
 
 const ContinentCard = () => {
-  const dispatch = useDispatch();
   const continentName = useSelector(
     (state) => state.userSelected.continentName
   );
-  const continentTotals = useContinentTotals();
-  const continentError = useContinentError();
 
-  useEffect(() => {
-    continentName && dispatch(fetchContinentData(continentName));
-  }, [continentName]);
+  const {
+    startedTimeStamp,
+    data,
+    isError,
+    error,
+    isFetching,
+    isLoading,
+    isSuccess,
+  } = useGetContinentDataQuery(continentName, { pollingInterval: 5000 });
 
-  return continentTotals && !continentError ? (
+  return isSuccess ? (
     <div className="continentInfo__column column">
       <div className="vertical-panel panel">
         <div className="vertical-panel__point point">
           <div className="point__title point__title_high continent-name">
-            {continentTotals.continent.toUpperCase()}
+            {data.continent.toUpperCase()}
           </div>
         </div>
         <div className="vertical-panel__point point">
           <div className="row">
             <div className="point__title">population:&nbsp;</div>
             <div className="point__info">
-              {continentTotals.population.toLocaleString()}
+              {data.population.toLocaleString()}
             </div>
           </div>
           <div className="row">
             <div className="point__title">active:&nbsp;</div>
-            <div className="point__info">
-              {continentTotals.active.toLocaleString()}
-            </div>
+            <div className="point__info">{data.active.toLocaleString()}</div>
           </div>
           <div className="row">
             <div className="point__title">tests:&nbsp;</div>
-            <div className="point__info">
-              {continentTotals.tests.toLocaleString()}
-            </div>
+            <div className="point__info">{data.tests.toLocaleString()}</div>
           </div>
           <div className="row">
             <div className="point__title">today cases:&nbsp;</div>
             <div className="point__info">
-              {continentTotals.todayCases.toLocaleString()}
+              {data.todayCases.toLocaleString()}
             </div>
           </div>
           <div className="row">
             <div className="point__title">today deaths:&nbsp;</div>
             <div className="point__info">
-              {continentTotals.todayDeaths.toLocaleString()}
+              {data.todayDeaths.toLocaleString()}
             </div>
           </div>
           <div className="row">
             <div className="point__title">today recovered:&nbsp;</div>
             <div className="point__info">
-              {continentTotals.todayRecovered.toLocaleString()}
+              {data.todayRecovered.toLocaleString()}
             </div>
           </div>
         </div>
@@ -73,7 +67,7 @@ const ContinentCard = () => {
           <div className="row">
             <img className="row__img point__img" src={casesImg} alt="icon" />
             <div className="point__info point__info_red">
-              {continentTotals.cases.toLocaleString()}
+              {data.cases.toLocaleString()}
             </div>
           </div>
         </div>
@@ -81,7 +75,7 @@ const ContinentCard = () => {
           <div className="row">
             <img className="row__img point__img" src={deathsImg} alt="icon" />
             <div className="point__info point__info_red">
-              {continentTotals.deaths.toLocaleString()}
+              {data.deaths.toLocaleString()}
             </div>
           </div>
         </div>
@@ -93,7 +87,7 @@ const ContinentCard = () => {
               alt="icon"
             />
             <div className="point__info point__info_red">
-              {continentTotals.recovered.toLocaleString()}
+              {data.recovered.toLocaleString()}
             </div>
           </div>
         </div>
@@ -105,8 +99,10 @@ const ContinentCard = () => {
         <div className="vertical-panel__point point">
           <div className="row">
             <img className="row__img point__img" src={warningImg} alt="icon" />
-            {continentError ? (
-              <div className="point__info">{continentError.message}</div>
+            {isError ? (
+              <div className="point__info">
+                {error.status}: {error.data.message}
+              </div>
             ) : (
               <div className="point__info">Choose continent</div>
             )}
