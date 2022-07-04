@@ -40,12 +40,6 @@ export class Core {
     this.renderer = new THREE.WebGLRenderer({
       alpha: true, // для белого фона сцены
     });
-    // this.orbitControls = new OrbitControls(
-    //   this.camera,
-    //   this.renderer.domElement
-    // );
-    // this.orbitControls.maxDistance = 400;
-    // this.orbitControls.minDistance = 200;
 
     // создает тег canvas
     this.canvas = this.renderer.domElement;
@@ -102,6 +96,7 @@ export class Core {
   onWindowResize = () => {
     if (this.camera instanceof THREE.PerspectiveCamera)
       this.camera.aspect = window.innerWidth / window.innerHeight;
+    this.camera.updateProjectionMatrix();
     this.width = window.innerWidth;
     this.height = window.innerHeight;
 
