@@ -86,9 +86,10 @@ const earthClickEvent = (canvas) => (event) => {
 
   const { getIntersects, getModel } = canvas.getEventControllers();
 
-  const earth = getModel("globe");
+  const earth = getModel("earth");
   if (earth === undefined) return;
 
+  console.log("CLICK");
   try {
     let selectedCountryId = -1;
 

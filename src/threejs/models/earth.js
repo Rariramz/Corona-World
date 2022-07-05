@@ -1,7 +1,4 @@
 import * as THREE from "three";
-import { countryColorMap } from "../helpers/countryColorMap.js";
-import countryByCode from "../../geojson/countryByCode";
-import countryByContinent from "../../geojson/countryByContinent";
 
 import earthMap1K from "../../images/earth-blue-marble.jpg";
 // import earthMap1K from "../../images/earthmap1k.jpg";
@@ -30,16 +27,16 @@ export const createEarth = () => {
     atmosphere: {
       size: 0.003,
       material: {
-        opacity: 0.2,
+        opacity: 0.3,
       },
       textures: {
         map: earthCloudMap,
         alphaMap: earthCloudMapTrans,
       },
       glow: {
-        size: 0.02,
-        intensity: 0.1,
-        fade: 7,
+        size: 0.03,
+        intensity: 1.05,
+        fade: 10,
         color: 0x93cfef,
       },
     },
@@ -47,8 +44,15 @@ export const createEarth = () => {
 
   // Create the planet's Surface
   const surfaceGeometry = new THREE.SphereGeometry(options.surface.size);
-  const surfaceMaterial = countriesShaderMaterial; //new THREE.MeshPhongMaterial(options.surface.material);
+  const surfaceMaterial = new THREE.MeshPhongMaterial(options.surface.material);
   const surface = new THREE.Mesh(surfaceGeometry, surfaceMaterial);
+
+  // Show countries
+  const countriesGeometry = new THREE.SphereGeometry(
+    options.surface.size + 0.001
+  );
+  const countriesMaterial = countriesShaderMaterial;
+  const countries = new THREE.Mesh(countriesGeometry, countriesMaterial);
 
   // Create the planet's Atmosphere
   const atmosphereGeometry = new THREE.SphereGeometry(
@@ -73,11 +77,11 @@ export const createEarth = () => {
   );
   const atmosphericGlowMaterial = new THREE.ShaderMaterial({
     uniforms: {
-      c: {
+      intensity: {
         type: "f",
         value: options.atmosphere.glow.intensity,
       },
-      p: {
+      fade: {
         type: "f",
         value: options.atmosphere.glow.fade,
       },
@@ -92,22 +96,28 @@ export const createEarth = () => {
     },
     vertexShader: `
           uniform vec3 viewVector;
-          uniform float c;
-          uniform float p;
-          varying float intensity;
+
+          varying vec3 vertexNormal;
+          varying vec3 vUv;
+
           void main() {
-            vec3 vNormal = normalize( normalMatrix * normal );
-            vec3 vNormel = normalize( normalMatrix * viewVector );
-            intensity = pow( c - dot(vNormal, vNormel), p );
+            vertexNormal = normalize( normalMatrix * normal );
+            vUv = normalize( normalMatrix * viewVector );
             gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
           }`,
     fragmentShader: `
           uniform vec3 glowColor;
-          varying float intensity;
+          uniform float intensity;
+          uniform float fade;
+
+          varying vec3 vertexNormal;
+          varying vec3 vUv;
+
           void main()
           {
-            vec3 glow = glowColor * intensity;
-            gl_FragColor = vec4( glow, 1.0 );
+            float brightness = intensity - dot(vertexNormal, vUv);
+            vec3 atmosphere = glowColor * pow(brightness, fade);
+            gl_FragColor = vec4( atmosphere, 1.0 );
           }`,
     side: THREE.BackSide,
     blending: THREE.AdditiveBlending,
@@ -118,21 +128,16 @@ export const createEarth = () => {
     atmosphericGlowMaterial
   );
 
-  // Show countries
-  const countriesGeometry = new THREE.SphereGeometry(options.surface.size);
-  const countriesMaterial = countriesShaderMaterial;
-  const countries = new THREE.Mesh(countriesGeometry, countriesMaterial);
-
   // Nest the planet's Surface and Atmosphere into a planet object
   const planet = new THREE.Group();
   surface.name = "surface";
+  countries.name = "countries";
   atmosphere.name = "atmosphere";
   atmosphericGlow.name = "atmosphericGlow";
-  countries.name = "countries";
   planet.add(surface);
+  planet.add(countries);
   planet.add(atmosphere);
   planet.add(atmosphericGlow);
-  planet.add(countries);
 
   // Load the Surface's textures
   for (let textureProperty in options.surface.textures) {

@@ -55,6 +55,7 @@ const Canvas = () => {
       events: earthEvents,
     });
 
+    console.log(threejsObject);
     // старт работы событий
     threejsObject.startAnimation();
 
