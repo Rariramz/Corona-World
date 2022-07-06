@@ -66,7 +66,7 @@ export class Core {
     if (isOrbitControls) {
       this.orbitControls = new OrbitControls(this.camera, this.canvas);
       this.orbitControls.target.set(0, 0, 0);
-      // this.orbitControls.autoRotate = true;
+      this.orbitControls.autoRotate = true;
       this.orbitControls.autoRotateSpeed = 0.1;
       this.orbitControls.minPolarAngle = 1;
       this.orbitControls.maxPolarAngle = 2;
