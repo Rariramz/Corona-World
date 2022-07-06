@@ -21,7 +21,7 @@ export default class ThreeJS extends Core {
     this.addEvents = this.addEvents.bind(this);
     this.getEventControllers = this.getEventControllers.bind(this);
     this.getIntersects = this.getIntersects.bind(this);
-    this.render = this.render.bind(this);
+    // this.render = this.render.bind(this);
   }
 
   addElement = ({
@@ -131,7 +131,7 @@ export default class ThreeJS extends Core {
   };
 
   //  raycaster object (объект пересечения с элементом)
-  getIntersects = (mouseCoordinates, object) => {
+  getIntersects = ({ mouseCoordinates, object }) => {
     const raycaster = new THREE.Raycaster();
     const pointer = new THREE.Vector2();
 
@@ -147,15 +147,15 @@ export default class ThreeJS extends Core {
     return intersects;
   };
 
-  render = () => {
-    this.renderer.render(this.scene, this.camera);
+  // render = () => {
+  //   this.renderer.render(this.scene, this.camera);
 
-    if (this.cameraAutoRotation) {
-      this.cameraRotation += this.cameraRotationSpeed;
-      this.camera.position.y = 0;
-      this.camera.position.x = 2 * Math.sin(this.cameraRotation);
-      this.camera.position.z = 2 * Math.cos(this.cameraRotation);
-      this.camera.lookAt(0, 0, 0);
-    }
-  };
+  //   if (this.cameraAutoRotation) {
+  //     this.cameraRotation += this.cameraRotationSpeed;
+  //     this.camera.position.y = 0;
+  //     this.camera.position.x = 2 * Math.sin(this.cameraRotation);
+  //     this.camera.position.z = 2 * Math.cos(this.cameraRotation);
+  //     this.camera.lookAt(0, 0, 0);
+  //   }
+  // };
 }

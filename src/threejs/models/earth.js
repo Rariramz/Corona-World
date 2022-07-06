@@ -25,9 +25,9 @@ export const createEarth = () => {
       },
     },
     atmosphere: {
-      size: 0.003,
+      size: 0.01,
       material: {
-        opacity: 0.3,
+        opacity: 0.2,
       },
       textures: {
         map: earthCloudMap,
@@ -128,17 +128,6 @@ export const createEarth = () => {
     atmosphericGlowMaterial
   );
 
-  // Nest the planet's Surface and Atmosphere into a planet object
-  const planet = new THREE.Group();
-  surface.name = "surface";
-  countries.name = "countries";
-  atmosphere.name = "atmosphere";
-  atmosphericGlow.name = "atmosphericGlow";
-  planet.add(surface);
-  planet.add(countries);
-  planet.add(atmosphere);
-  planet.add(atmosphericGlow);
-
   // Load the Surface's textures
   for (let textureProperty in options.surface.textures) {
     const texture = new THREE.TextureLoader().load(
@@ -156,6 +145,17 @@ export const createEarth = () => {
     atmosphereMaterial[textureProperty] = texture;
     atmosphereMaterial.needsUpdate = true;
   }
+
+  // Nest the planet's Surface and Atmosphere into a planet object
+  const planet = new THREE.Group();
+  surface.name = "surface";
+  countries.name = "countries";
+  atmosphere.name = "atmosphere";
+  atmosphericGlow.name = "atmosphericGlow";
+  planet.add(surface);
+  planet.add(countries);
+  planet.add(atmosphere);
+  // planet.add(atmosphericGlow);
 
   planet.receiveShadow = true;
   planet.castShadow = true;

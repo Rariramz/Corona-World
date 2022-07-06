@@ -34,11 +34,18 @@ const Canvas = () => {
 
   // настраиваем основные элементы сцены и запускаем в рендер
   useEffect(() => {
+    window.addEventListener("dispatchSetCountryName", (event) => {
+      dispatch(setCountryName(event.detail.countryName));
+    });
+    window.addEventListener("dispatchSetContinentName", (event) => {
+      dispatch(setContinentName(event.detail.continentName));
+    });
+
     const threejsObject = canvas.current;
     threejsObject.init(canvasContainer.current, true, true);
     threejsObject.addLights([
       new THREE.AmbientLight(0xbbbbbb, 0.6),
-      new THREE.SpotLight(0xffffff, 1, 0, 10, 2).position.set(2, 0, 1),
+      new THREE.SpotLight(0xffffff, 1, 0, 10, 2), //.position.set(2, 0, 1),
     ]);
 
     // создает подписку на ресайз
@@ -55,7 +62,6 @@ const Canvas = () => {
       events: earthEvents,
     });
 
-    console.log(threejsObject);
     // старт работы событий
     threejsObject.startAnimation();
 

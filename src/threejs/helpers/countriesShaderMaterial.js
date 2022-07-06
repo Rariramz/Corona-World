@@ -82,19 +82,18 @@ imageObj.src = earthCountriesShadesImg;
 
 // EVENTS
 const earthClickEvent = (canvas) => (event) => {
-  // event.preventDefault();
+  event.preventDefault();
 
   const { getIntersects, getModel } = canvas.getEventControllers();
 
   const earth = getModel("earth");
   if (earth === undefined) return;
 
-  console.log("CLICK");
   try {
     let selectedCountryId = -1;
 
     const intersects = getIntersects({
-      mouseCoordinates: { x: event.clientX, y: event.client },
+      mouseCoordinates: { x: event.clientX, y: event.clientY },
       object: earth,
     });
 
@@ -122,7 +121,12 @@ const earthClickEvent = (canvas) => (event) => {
       if (countryObj) {
         const countryName = countryObj.country;
         // console.log("COUNTRY NAME:", countryName);
-        //    dispatch(setCountryName(countryName));
+        // dispatch(setCountryName(countryName));
+        window.dispatchEvent(
+          new CustomEvent("dispatchSetCountryName", {
+            detail: { countryName },
+          })
+        );
 
         const continentObj = countryByContinent.filter(
           (obj) => obj.country === countryName
@@ -130,7 +134,12 @@ const earthClickEvent = (canvas) => (event) => {
         if (continentObj) {
           const continentName = continentObj.continent;
           // console.log("CONTINENT NAME:", continentName);
-          //   dispatch(setContinentName(continentName));
+          // dispatch(setContinentName(continentName));
+          window.dispatchEvent(
+            new CustomEvent("dispatchSetContinentName", {
+              detail: { continentName },
+            })
+          );
         }
       }
 
