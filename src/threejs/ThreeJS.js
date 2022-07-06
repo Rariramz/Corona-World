@@ -13,7 +13,7 @@ export default class ThreeJS extends Core {
     this.cameraRotation = 0;
     this.cameraRotationSpeed = 0.001;
 
-    this.orbitControls.enabled = !this.cameraAutoRotation;
+    // this.orbitControls.enabled = !this.cameraAutoRotation;
 
     this.addElement = this.addElement.bind(this);
     this.addLights = this.addLights.bind(this);

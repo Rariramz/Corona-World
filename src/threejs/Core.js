@@ -31,7 +31,7 @@ export class Core {
     this.mountTime = true;
     this.clock = new THREE.Clock();
     this.updatable = new Set();
-    this.orbitControls = [];
+    this.orbitControls = null;
     this.elements = {
       groups: {},
       elements: {},
@@ -64,7 +64,20 @@ export class Core {
 
     // устанавливает orbitControl
     if (isOrbitControls) {
-      this.orbitControls = [new OrbitControls(this.camera, this.canvas)];
+      this.orbitControls = new OrbitControls(this.camera, this.canvas);
+      this.orbitControls.target.set(0, 0, 0);
+      this.orbitControls.autoRotate = true;
+      this.orbitControls.autoRotateSpeed = 0.1;
+      this.orbitControls.minPolarAngle = 1;
+      this.orbitControls.maxPolarAngle = 2;
+      this.orbitControls.maxDistance = 5;
+      this.orbitControls.minDistance = 1.2;
+      // this.orbitControls.keys = {
+      //   LEFT: "ArrowLeft", //left arrow
+      //   UP: "ArrowUp", // up arrow
+      //   RIGHT: "ArrowRight", // right arrow
+      //   BOTTOM: "ArrowDown", // down arrow
+      // };
     }
 
     this.startAnimation();
@@ -147,6 +160,9 @@ export class Core {
       Object.values(this.eventController.events.inAnimationFrame).forEach(
         (eventFunction) => eventFunction.function()
       );
+    }
+    if (this.orbitControls) {
+      this.orbitControls.update();
     }
 
     this.tick();
