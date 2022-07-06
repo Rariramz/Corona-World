@@ -161,11 +161,31 @@ const earthClickEvent = (canvas) => (event) => {
   }
 };
 
+const earthAnimation = (canvas) =>
+  function animation() {
+    const { getModel } = canvas.getEventControllers();
+
+    const earth = getModel("earth");
+    if (earth === undefined) return;
+
+    earth.getObjectByName("surface").rotation.y += (1 / 32) * 0.01;
+    earth.getObjectByName("atmosphere").rotation.y += 1 * 0.01;
+
+    window.requestAnimationFrame(animation);
+  };
+
 export const earthEvents = [
   {
     function: earthClickEvent,
     type: "click",
     name: "earth_click",
     addInRequestAnimation: false,
+  },
+  {
+    function: earthAnimation,
+    type: "",
+    name: "earth_animation",
+    addInRequestAnimation: false,
+    haveInnerRequestAnimationFunction: false,
   },
 ];
