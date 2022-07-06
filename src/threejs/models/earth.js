@@ -9,7 +9,7 @@ import earthCloudMapTrans from "../../images/earthcloudmaptrans.jpg";
 
 import { countriesShaderMaterial } from "../helpers/countriesShaderMaterial.js";
 
-export const createEarth = () => {
+export const createEarth = (camera) => {
   const options = {
     surface: {
       size: 0.5,
@@ -27,15 +27,15 @@ export const createEarth = () => {
     atmosphere: {
       size: 0.01,
       material: {
-        opacity: 0.2,
+        opacity: 0.3,
       },
       textures: {
         map: earthCloudMap,
         alphaMap: earthCloudMapTrans,
       },
       glow: {
-        size: 0.03,
-        intensity: 1.05,
+        size: 0.04,
+        intensity: 0.8,
         fade: 10,
         color: 0x93cfef,
       },
@@ -91,7 +91,7 @@ export const createEarth = () => {
       },
       viewVector: {
         type: "v3",
-        value: [1, 1, 1], //camera.position
+        value: camera.position,
       },
     },
     vertexShader: `
@@ -117,7 +117,7 @@ export const createEarth = () => {
           {
             float brightness = intensity - dot(vertexNormal, vUv);
             vec3 atmosphere = glowColor * pow(brightness, fade);
-            gl_FragColor = vec4( atmosphere, 1.0 );
+            gl_FragColor = vec4( atmosphere, 0.3 );
           }`,
     side: THREE.BackSide,
     blending: THREE.AdditiveBlending,
@@ -155,7 +155,7 @@ export const createEarth = () => {
   planet.add(surface);
   planet.add(countries);
   planet.add(atmosphere);
-  // planet.add(atmosphericGlow);
+  planet.add(atmosphericGlow);
 
   planet.receiveShadow = true;
   planet.castShadow = true;

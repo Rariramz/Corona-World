@@ -9,19 +9,12 @@ export default class ThreeJS extends Core {
     this.height = height;
     this.camera = camera;
 
-    this.cameraAutoRotation = cameraAutoRotation;
-    this.cameraRotation = 0;
-    this.cameraRotationSpeed = 0.001;
-
-    // this.orbitControls.enabled = !this.cameraAutoRotation;
-
     this.addElement = this.addElement.bind(this);
     this.addLights = this.addLights.bind(this);
     this.getModel = this.getModel.bind(this);
     this.addEvents = this.addEvents.bind(this);
     this.getEventControllers = this.getEventControllers.bind(this);
     this.getIntersects = this.getIntersects.bind(this);
-    // this.render = this.render.bind(this);
   }
 
   addElement = ({
@@ -146,16 +139,4 @@ export default class ThreeJS extends Core {
     // object - объект проверяемый на пересечение с узлом
     return intersects;
   };
-
-  // render = () => {
-  //   this.renderer.render(this.scene, this.camera);
-
-  //   if (this.cameraAutoRotation) {
-  //     this.cameraRotation += this.cameraRotationSpeed;
-  //     this.camera.position.y = 0;
-  //     this.camera.position.x = 2 * Math.sin(this.cameraRotation);
-  //     this.camera.position.z = 2 * Math.cos(this.cameraRotation);
-  //     this.camera.lookAt(0, 0, 0);
-  //   }
-  // };
 }

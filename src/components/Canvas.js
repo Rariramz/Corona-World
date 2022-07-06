@@ -57,7 +57,7 @@ const Canvas = () => {
       name: "galaxy",
     });
     threejsObject.addElement({
-      element: createEarth(),
+      element: createEarth(camera),
       name: "earth",
       events: earthEvents,
     });
