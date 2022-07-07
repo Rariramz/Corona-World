@@ -37,7 +37,7 @@ export const createEarth = (camera) => {
         size: 0.04,
         intensity: 0.8,
         fade: 10,
-        color: "rgb(65,105,225)",
+        color: "rgb(100,149,237)",
       },
     },
   };
