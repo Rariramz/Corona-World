@@ -72,12 +72,12 @@ export class Core {
       this.orbitControls.maxPolarAngle = 2;
       this.orbitControls.maxDistance = 5;
       this.orbitControls.minDistance = 1.2;
-      // this.orbitControls.keys = {
-      //   LEFT: "ArrowLeft", //left arrow
-      //   UP: "ArrowUp", // up arrow
-      //   RIGHT: "ArrowRight", // right arrow
-      //   BOTTOM: "ArrowDown", // down arrow
-      // };
+      this.orbitControls.keys = {
+        LEFT: "ArrowLeft", //left arrow
+        UP: "ArrowUp", // up arrow
+        RIGHT: "ArrowRight", // right arrow
+        BOTTOM: "ArrowDown", // down arrow
+      };
     }
 
     this.startAnimation();

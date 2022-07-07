@@ -3,7 +3,7 @@ import * as THREE from "three";
 import { Core } from "./Core";
 
 export default class ThreeJS extends Core {
-  constructor(camera, width, height, cameraAutoRotation = false) {
+  constructor(camera, width, height) {
     super(camera, width, height);
     this.width = width;
     this.height = height;

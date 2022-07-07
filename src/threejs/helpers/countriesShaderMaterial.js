@@ -4,9 +4,9 @@ import countryByCode from "../../geojson/countryByCode";
 import countryByContinent from "../../geojson/countryByContinent";
 import { countryColorMap } from "./countryColorMap";
 
-import earthImg from "../../images/earth-blue-marble.jpg";
-import earthCountriesShadesImg from "../../images/earth-index-shifted-gray.png";
-import earthCountriesOutlinesImg from "../../images/earth-outline-shifted-gray.png";
+import earthImg from "../../images/earth-textures/earth-blue-marble.jpg";
+import earthCountriesShadesImg from "../../images/earth-textures/earth-index-shifted-gray.png";
+import earthCountriesOutlinesImg from "../../images/earth-textures/earth-outline-shifted-gray.png";
 
 // ------------------------------------------------------------------------------------------------
 // Create the "lookup texture", which contains a colored pixel for each country
@@ -66,7 +66,7 @@ export const countriesShaderMaterial = new THREE.ShaderMaterial({
         // if (outlineColor.x > 0.1) outlineColor = vec4(1.0,1.0,1.0,1.0);
     
         
-        gl_FragColor = 0.99 * outlineColor + 1.0 * lookupColor + 0.99 * blendColor;
+        gl_FragColor = 0.7 * outlineColor + 0.5 * lookupColor + 1.0 * blendColor;
       }`,
 });
 
@@ -148,7 +148,7 @@ const earthClickEvent = (canvas) => (event) => {
       for (let i = 0; i < 228; i++) {
         if (i == 0) lookupContext.fillStyle = "rgba(0,0,0,1.0)";
         else if (i == selectedCountryId)
-          lookupContext.fillStyle = "rgba(50,50,0,0.5)";
+          lookupContext.fillStyle = "rgb(248, 42, 42)";
         else lookupContext.fillStyle = "rgba(0,0,0,1.0)";
 
         lookupContext.fillRect(i, 0, 1, 1);

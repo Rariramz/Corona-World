@@ -1,11 +1,11 @@
 import * as THREE from "three";
 
-import earthMap1K from "../../images/earth-blue-marble.jpg";
-// import earthMap1K from "../../images/earthmap1k.jpg";
-import earthBump1K from "../../images/earthbump1k.jpg";
-import earthSpec1K from "../../images/earthspec1k.jpg";
-import earthCloudMap from "../../images/earthcloudmap.jpg";
-import earthCloudMapTrans from "../../images/earthcloudmaptrans.jpg";
+import earthMap1K from "../../images/earth-textures/earth-blue-marble.jpg";
+// import earthMap1K from "../../images/earth-textures/earthmap1k.jpg";
+import earthBump1K from "../../images/earth-textures/earthbump1k.jpg";
+import earthSpec1K from "../../images/earth-textures/earthspec1k.jpg";
+import earthCloudMap from "../../images/earth-textures/earthcloudmap.jpg";
+import earthCloudMapTrans from "../../images/earth-textures/earthcloudmaptrans.jpg";
 
 import { countriesShaderMaterial } from "../helpers/countriesShaderMaterial.js";
 
@@ -37,7 +37,7 @@ export const createEarth = (camera) => {
         size: 0.04,
         intensity: 0.8,
         fade: 10,
-        color: 0x93cfef,
+        color: "rgb(65,105,225)",
       },
     },
   };
@@ -153,7 +153,7 @@ export const createEarth = (camera) => {
   atmosphere.name = "atmosphere";
   atmosphericGlow.name = "atmosphericGlow";
   planet.add(surface);
-  planet.add(countries);
+  // planet.add(countries);
   planet.add(atmosphere);
   planet.add(atmosphericGlow);
 

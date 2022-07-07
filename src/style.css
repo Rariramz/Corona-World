@@ -50,7 +50,7 @@ body {
 
 .panel {
   border-radius: 5px;
-  background-color: rgba(0, 0, 0, 0.8); /* rgba(0, 0, 0, 1); */
+  background-color: rgba(0, 0, 0, 0.8);
   border: 1px solid #ffffff;
   box-shadow: 0 0 5px rgba(104, 210, 255, 1),
     -10px -10px 30px rgba(0, 255, 170, 0.3),
@@ -140,8 +140,8 @@ body {
 
 .country-flag__mask {
   height: 60px;
-  width: 60px;
-  border-radius: 50%;
+  width: fit-content;
+  border-radius: 5px;
   border: 1px solid #000000;
   box-shadow: 0 0 5px rgb(0, 0, 0);
   overflow: hidden;

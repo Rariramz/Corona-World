@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 
-import casesImg from "../images/coronavirus.png";
-import deathsImg from "../images/skull.png";
-import recoveredImg from "../images/heart.png";
-import warningImg from "../images/warning.png";
+import casesImg from "../images/icons/coronavirus.png";
+import deathsImg from "../images/icons/skull.png";
+import recoveredImg from "../images/icons/heart.png";
+import warningImg from "../images/icons/warning.png";
 
 import { useSelector } from "react-redux";
 import { useGetCountryDataQuery } from "../redux/country/countrySlice";

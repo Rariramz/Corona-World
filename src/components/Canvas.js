@@ -30,7 +30,7 @@ const Canvas = () => {
   }, [width, height]);
 
   // создает экземпляр объекта работы 3js
-  const canvas = useRef(new ThreeJS(camera, width, height, true));
+  const canvas = useRef(new ThreeJS(camera, width, height));
 
   // настраиваем основные элементы сцены и запускаем в рендер
   useEffect(() => {
@@ -41,12 +41,20 @@ const Canvas = () => {
       dispatch(setContinentName(event.detail.continentName));
     });
 
+    const earth = createEarth(camera);
+
     const threejsObject = canvas.current;
     threejsObject.init(canvasContainer.current, true, true);
-    threejsObject.addLights([
-      new THREE.AmbientLight(0xbbbbbb, 0.6),
-      new THREE.SpotLight(0xffffff, 1, 0, 10, 2), //.position.set(2, 0, 1),
-    ]);
+
+    const redLight = new THREE.SpotLight("red", 0.5, 200, 10.0, 0.6);
+    redLight.position.set(100, 100, -100);
+
+    const ambientLight = new THREE.AmbientLight("rgb(240,248,255)", 0.2);
+
+    const blueLight = new THREE.DirectionalLight("rgb(100,149,237)", 0.5);
+    blueLight.position.set(100, 0, 10);
+
+    threejsObject.addLights([redLight, blueLight, ambientLight]);
 
     // создает подписку на ресайз
     threejsObject.startWindowResize();
@@ -57,7 +65,7 @@ const Canvas = () => {
       name: "galaxy",
     });
     threejsObject.addElement({
-      element: createEarth(camera),
+      element: earth,
       name: "earth",
       events: earthEvents,
     });
