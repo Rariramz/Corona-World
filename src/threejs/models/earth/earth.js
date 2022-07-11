@@ -1,22 +1,24 @@
 import * as THREE from "three";
 
-import earthMap1K from "../../images/earth-textures/earth-blue-marble.jpg";
+import earthMap1K from "../../../images/earth-textures/earth-blue-marble.jpg";
 // import earthMap1K from "../../images/earth-textures/earthmap1k.jpg";
-import earthBump1K from "../../images/earth-textures/earthbump1k.jpg";
-import earthSpec1K from "../../images/earth-textures/earthspec1k.jpg";
-import earthCloudMap from "../../images/earth-textures/earthcloudmap.jpg";
-import earthCloudMapTrans from "../../images/earth-textures/earthcloudmaptrans.jpg";
+import earthBump1K from "../../../images/earth-textures/earthbump1k.jpg";
+import earthSpec1K from "../../../images/earth-textures/earthspec1k.jpg";
+import earthCloudMap from "../../../images/earth-textures/earthcloudmap.jpg";
+import earthCloudMapTrans from "../../../images/earth-textures/earthcloudmaptrans.jpg";
 
-import { countriesShaderMaterial } from "../helpers/countriesShaderMaterial.js";
+import { countriesShaderMaterial } from "./countriesShaderMaterial.js";
 
 export const createEarth = (camera) => {
   const options = {
     surface: {
       size: 0.5,
+      widthSegments: 360,
+      heightSegments: 360,
       material: {
         bumpScale: 0.05,
         specular: new THREE.Color("grey"),
-        shininess: 10,
+        shininess: 1,
       },
       textures: {
         map: earthMap1K,
@@ -43,13 +45,19 @@ export const createEarth = (camera) => {
   };
 
   // Create the planet's Surface
-  const surfaceGeometry = new THREE.SphereGeometry(options.surface.size);
+  const surfaceGeometry = new THREE.SphereGeometry(
+    options.surface.size,
+    options.surface.widthSegments,
+    options.surface.heightSegments
+  );
   const surfaceMaterial = new THREE.MeshPhongMaterial(options.surface.material);
   const surface = new THREE.Mesh(surfaceGeometry, surfaceMaterial);
 
   // Show countries
   const countriesGeometry = new THREE.SphereGeometry(
-    options.surface.size + 0.001
+    options.surface.size + 0.001,
+    options.surface.widthSegments,
+    options.surface.heightSegments
   );
   const countriesMaterial = countriesShaderMaterial;
   const countries = new THREE.Mesh(countriesGeometry, countriesMaterial);
@@ -57,8 +65,8 @@ export const createEarth = (camera) => {
   // Create the planet's Atmosphere
   const atmosphereGeometry = new THREE.SphereGeometry(
     options.surface.size + options.atmosphere.size,
-    32,
-    32
+    options.surface.widthSegments,
+    options.surface.heightSegments
   );
   const atmosphereMaterial = new THREE.MeshPhongMaterial({
     side: THREE.DoubleSide,
@@ -72,8 +80,8 @@ export const createEarth = (camera) => {
     options.surface.size +
       options.atmosphere.size +
       options.atmosphere.glow.size,
-    32,
-    32
+    options.surface.widthSegments,
+    options.surface.heightSegments
   );
   const atmosphericGlowMaterial = new THREE.ShaderMaterial({
     uniforms: {
@@ -153,8 +161,8 @@ export const createEarth = (camera) => {
   atmosphere.name = "atmosphere";
   atmosphericGlow.name = "atmosphericGlow";
   planet.add(surface);
-  // planet.add(countries);
-  planet.add(atmosphere);
+  planet.add(countries);
+  // planet.add(atmosphere);
   planet.add(atmosphericGlow);
 
   planet.receiveShadow = true;

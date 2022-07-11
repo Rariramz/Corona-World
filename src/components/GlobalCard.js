@@ -1,4 +1,4 @@
-import { React, useEffect } from "react";
+import { React } from "react";
 
 import casesImg from "../images/icons/coronavirus.png";
 import deathsImg from "../images/icons/skull.png";

@@ -11,12 +11,14 @@ export default class ThreeJS extends Core {
 
     this.addElement = this.addElement.bind(this);
     this.addLights = this.addLights.bind(this);
+    this.addAutoRotation = this.addAutoRotation.bind(this);
     this.getModel = this.getModel.bind(this);
     this.addEvents = this.addEvents.bind(this);
     this.getEventControllers = this.getEventControllers.bind(this);
     this.getIntersects = this.getIntersects.bind(this);
   }
 
+  // ---------------------------------------------------------------------------------------------------
   addElement = ({
     element,
     name,
@@ -61,6 +63,7 @@ export default class ThreeJS extends Core {
     this.scene.add(this.elements.groups[name]);
   };
 
+  // ---------------------------------------------------------------------------------------------------
   addEvents = (events) => {
     if (!events || !(events instanceof Array)) return;
 
@@ -102,6 +105,7 @@ export default class ThreeJS extends Core {
     });
   };
 
+  // ---------------------------------------------------------------------------------------------------
   getEventControllers = () => {
     return {
       getIntersects: this.getIntersects,
@@ -113,8 +117,29 @@ export default class ThreeJS extends Core {
   addLights = (lights) => {
     lights.forEach((light) => this.scene.add(light));
   };
-  // ---------------------------------------------------------------------------------------------------
 
+  // ---------------------------------------------------------------------------------------------------
+  addAutoRotation = (options) => {
+    if (this.orbitControls) this.orbitControls.target.set(0, 0, 0);
+    this.orbitControls.autoRotate = true;
+    for (let rotationProperty in options) {
+      this.orbitControls[rotationProperty] = options[rotationProperty];
+    }
+  };
+
+  // ---------------------------------------------------------------------------------------------------
+  // метод для изменения состояния камеры
+  tornPerspectiveCamera = (position, rotation, aspect, near, far) => {
+    if (this.camera instanceof THREE.PerspectiveCamera) {
+      if (aspect) this.camera.aspect = aspect;
+      if (near === 0 || near) this.camera.near = near;
+      if (far === 0 || far) this.camera.far = far;
+      if (!(position === undefined)) this.camera.position.set(...position);
+      if (!(rotation === undefined)) this.camera.rotation.set(...rotation);
+    }
+  };
+
+  // ---------------------------------------------------------------------------------------------------
   getModel = (name) => {
     return (
       this.elements.groups?.[name] ||
@@ -123,6 +148,7 @@ export default class ThreeJS extends Core {
     );
   };
 
+  // ---------------------------------------------------------------------------------------------------
   //  raycaster object (объект пересечения с элементом)
   getIntersects = ({ mouseCoordinates, object }) => {
     const raycaster = new THREE.Raycaster();

@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import starfield from "../../images/galaxy/3.jpg";
+import starfield from "../../../images/galaxy/3.jpg";
 
 export const createGalaxy = () => {
   const galaxyGeometry = new THREE.SphereGeometry(100, 32, 32);

@@ -2,14 +2,14 @@ import * as THREE from "three";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 
-import ThreeJS from "../threejs/ThreeJS";
 import {
   setContinentName,
   setCountryName,
 } from "../redux/userSelected/userSelectedSlice.js";
-import { createEarth } from "../threejs/models/earth.js";
-import { earthEvents } from "../threejs/helpers/countriesShaderMaterial.js";
-import { createGalaxy } from "../threejs/models/galaxy.js";
+import ThreeJS from "../threejs/ThreeJS";
+import { createEarth } from "../threejs/models/earth/earth.js";
+import { createGalaxy } from "../threejs/models/galaxy/galaxy.js";
+import { earthClickEvent } from "../threejs/models/earth/countryClickEvent.js";
 
 const Canvas = () => {
   const dispatch = useDispatch();
@@ -24,8 +24,6 @@ const Canvas = () => {
   // создаю нужную камеру
   const camera = useMemo(() => {
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1500);
-    camera.position.set(1, 1, 1);
-    camera.lookAt(0, 0, 0);
     return camera;
   }, [width, height]);
 
@@ -41,34 +39,57 @@ const Canvas = () => {
       dispatch(setContinentName(event.detail.continentName));
     });
 
-    const earth = createEarth(camera);
-
     const threejsObject = canvas.current;
     threejsObject.init(canvasContainer.current, true, true);
 
-    const redLight = new THREE.SpotLight("red", 0.5, 200, 10.0, 0.6);
+    // CAMERA POSITION
+    threejsObject.tornPerspectiveCamera([1, 1, 1]);
+
+    // LIGHTS
+    const redLight = new THREE.DirectionalLight("red", 0.2);
     redLight.position.set(100, 100, -100);
 
-    const ambientLight = new THREE.AmbientLight("rgb(240,248,255)", 0.2);
+    const ambientLight = new THREE.AmbientLight("rgb(240,248,255)", 0.3);
 
     const blueLight = new THREE.DirectionalLight("rgb(100,149,237)", 0.5);
     blueLight.position.set(100, 0, 10);
 
     threejsObject.addLights([redLight, blueLight, ambientLight]);
 
-    // создает подписку на ресайз
-    threejsObject.startWindowResize();
+    // ROTATION
+    threejsObject.addAutoRotation({
+      autoRotateSpeed: 0.1,
+      minPolarAngle: 1,
+      maxPolarAngle: 2,
+      maxDistance: 5,
+      minDistance: 1.2,
+    });
 
-    // добавление элементов
+    // ELEMENTS
+    const earth = createEarth(camera);
+
+    const earthEvents = [
+      {
+        function: earthClickEvent,
+        type: "click",
+        name: "earth_click",
+        addInRequestAnimation: false,
+      },
+    ];
+
     threejsObject.addElement({
       element: createGalaxy(),
       name: "galaxy",
     });
+
     threejsObject.addElement({
       element: earth,
       name: "earth",
       events: earthEvents,
     });
+
+    // создает подписку на ресайз
+    threejsObject.startWindowResize();
 
     // старт работы событий
     threejsObject.startAnimation();

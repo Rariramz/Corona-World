@@ -38,8 +38,10 @@ export class Core {
     };
 
     this.renderer = new THREE.WebGLRenderer({
+      antialias: true,
       alpha: true, // для белого фона сцены
     });
+    this.renderer.setPixelRatio(window.devicePixelRatio);
 
     // создает тег canvas
     this.canvas = this.renderer.domElement;
@@ -56,7 +58,6 @@ export class Core {
   }
 
   // ---------------------------------------------------------------------------------------------------
-
   // метод инициации работы объекта.
   init = (container, isOrbitControls, shouldStartEvents) => {
     // устанавливает размеры
@@ -65,19 +66,6 @@ export class Core {
     // устанавливает orbitControl
     if (isOrbitControls) {
       this.orbitControls = new OrbitControls(this.camera, this.canvas);
-      this.orbitControls.target.set(0, 0, 0);
-      this.orbitControls.autoRotate = true;
-      this.orbitControls.autoRotateSpeed = 0.1;
-      this.orbitControls.minPolarAngle = 1;
-      this.orbitControls.maxPolarAngle = 2;
-      this.orbitControls.maxDistance = 5;
-      this.orbitControls.minDistance = 1.2;
-      this.orbitControls.keys = {
-        LEFT: "ArrowLeft", //left arrow
-        UP: "ArrowUp", // up arrow
-        RIGHT: "ArrowRight", // right arrow
-        BOTTOM: "ArrowDown", // down arrow
-      };
     }
 
     this.startAnimation();
@@ -91,11 +79,11 @@ export class Core {
   };
 
   // ---------------------------------------------------------------------------------------------------
-
   render = () => {
     this.renderer.render(this.scene, this.camera);
   };
 
+  // ---------------------------------------------------------------------------------------------------
   // добавляет подписку на ресайз на глобальный объект.
   startWindowResize = () => {
     window.addEventListener("resize", this.onWindowResize);
@@ -116,6 +104,7 @@ export class Core {
     this.renderer.setSize(window.innerWidth, window.innerHeight);
   };
 
+  // ---------------------------------------------------------------------------------------------------
   // запускает и останавливает выполнение эвентов.
   startEvents = () => {
     const controller = this.eventController;
@@ -150,6 +139,7 @@ export class Core {
     }
   };
 
+  // ---------------------------------------------------------------------------------------------------
   // запускает анимацию , события и прочая деятельность (с подпиской на requestAnimationFrame ).
   // ОСТОРОЖНО !!! все попадающее сюда выполняется с частотой больше 16 раз в секунду.
   startAnimation = () => {
