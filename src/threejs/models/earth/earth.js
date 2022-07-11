@@ -142,7 +142,7 @@ export const createEarth = (camera) => {
       options.surface.textures[textureProperty]
     );
     surfaceMaterial[textureProperty] = texture;
-    surfaceMaterial.needsUpdate = true;
+    // surfaceMaterial.needsUpdate = true;
   }
 
   // Load the Atmosphere's texture
@@ -151,7 +151,7 @@ export const createEarth = (camera) => {
       options.atmosphere.textures[textureProperty]
     );
     atmosphereMaterial[textureProperty] = texture;
-    atmosphereMaterial.needsUpdate = true;
+    // atmosphereMaterial.needsUpdate = true;
   }
 
   // Nest the planet's Surface and Atmosphere into a planet object

@@ -12,8 +12,6 @@ import { createGalaxy } from "../threejs/models/galaxy/galaxy.js";
 import { earthClickEvent } from "../threejs/models/earth/countryClickEvent.js";
 
 const Canvas = () => {
-  const dispatch = useDispatch();
-
   // реф для ссылки на контейнер для монтажа canvas
   const canvasContainer = useRef(null);
 
@@ -32,13 +30,6 @@ const Canvas = () => {
 
   // настраиваем основные элементы сцены и запускаем в рендер
   useEffect(() => {
-    window.addEventListener("dispatchSetCountryName", (event) => {
-      dispatch(setCountryName(event.detail.countryName));
-    });
-    window.addEventListener("dispatchSetContinentName", (event) => {
-      dispatch(setContinentName(event.detail.continentName));
-    });
-
     const threejsObject = canvas.current;
     threejsObject.init(canvasContainer.current, true, true);
 
@@ -59,10 +50,15 @@ const Canvas = () => {
     // ROTATION
     threejsObject.addAutoRotation({
       autoRotateSpeed: 0.1,
+      rotateSpeed: 1,
       minPolarAngle: 1,
       maxPolarAngle: 2,
       maxDistance: 5,
       minDistance: 1.2,
+      enableDamping: true,
+      dampingFactor: 0.05,
+      enablePan: true,
+      panSpeed: 1,
     });
 
     // ELEMENTS

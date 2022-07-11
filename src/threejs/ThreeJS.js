@@ -8,14 +8,6 @@ export default class ThreeJS extends Core {
     this.width = width;
     this.height = height;
     this.camera = camera;
-
-    this.addElement = this.addElement.bind(this);
-    this.addLights = this.addLights.bind(this);
-    this.addAutoRotation = this.addAutoRotation.bind(this);
-    this.getModel = this.getModel.bind(this);
-    this.addEvents = this.addEvents.bind(this);
-    this.getEventControllers = this.getEventControllers.bind(this);
-    this.getIntersects = this.getIntersects.bind(this);
   }
 
   // ---------------------------------------------------------------------------------------------------
@@ -125,6 +117,7 @@ export default class ThreeJS extends Core {
     for (let rotationProperty in options) {
       this.orbitControls[rotationProperty] = options[rotationProperty];
     }
+    this.orbitControls.listenToKeyEvents(window);
   };
 
   // ---------------------------------------------------------------------------------------------------

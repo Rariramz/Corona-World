@@ -5,7 +5,6 @@ import countrySlice from "./country/countrySlice.js";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import userSelectedSlice from "./userSelected/userSelectedSlice.js";
-import { setupListeners } from "@reduxjs/toolkit/query";
 
 const rootReducer = combineReducers({
   [globalSlice.reducerPath]: globalSlice.reducer,
@@ -25,12 +24,11 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 export const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(
+    getDefaultMiddleware({ serializableCheck: false }).concat(
       globalSlice.middleware,
       continentSlice.middleware,
       countrySlice.middleware
     ),
 });
-// setupListeners(store.dispatch);
 
 export const persistor = persistStore(store);

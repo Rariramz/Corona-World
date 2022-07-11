@@ -45,16 +45,6 @@ export class Core {
 
     // создает тег canvas
     this.canvas = this.renderer.domElement;
-
-    this.init = this.init.bind(this);
-    this.render = this.render.bind(this);
-    this.startWindowResize = this.startWindowResize.bind(this);
-    this.stopWindowResize = this.stopWindowResize.bind(this);
-    this.startEvents = this.startEvents.bind(this);
-    this.stopEvents = this.stopEvents.bind(this);
-    this.startAnimation = this.startAnimation.bind(this);
-    this.onWindowResize = this.onWindowResize.bind(this);
-    this.tick = this.tick.bind(this);
   }
 
   // ---------------------------------------------------------------------------------------------------

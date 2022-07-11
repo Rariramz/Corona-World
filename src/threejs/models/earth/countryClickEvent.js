@@ -1,5 +1,10 @@
 import countryByCode from "../../../geojson/countryByCode";
 import countryByContinent from "../../../geojson/countryByContinent";
+import { store } from "../../../redux";
+import {
+  setCountryName,
+  setContinentName,
+} from "../../../redux/userSelected/userSelectedSlice";
 import {
   lookupContext,
   lookupTexture,
@@ -36,7 +41,6 @@ export const earthClickEvent = (canvas) => (event) => {
       let countryCode = "";
       for (let key in countryColorMap) {
         if (countryColorMap[key] === selectedCountryId) {
-          // console.log(`${key}: ${selectedCountryId}`);
           countryCode = key;
         }
       }
@@ -46,26 +50,14 @@ export const earthClickEvent = (canvas) => (event) => {
       )[0];
       if (countryObj) {
         const countryName = countryObj.country;
-        // console.log("COUNTRY NAME:", countryName);
-        // dispatch(setCountryName(countryName));
-        window.dispatchEvent(
-          new CustomEvent("dispatchSetCountryName", {
-            detail: { countryName },
-          })
-        );
+        store.dispatch(setCountryName(countryName));
 
         const continentObj = countryByContinent.filter(
           (obj) => obj.country === countryName
         )[0];
         if (continentObj) {
           const continentName = continentObj.continent;
-          // console.log("CONTINENT NAME:", continentName);
-          // dispatch(setContinentName(continentName));
-          window.dispatchEvent(
-            new CustomEvent("dispatchSetContinentName", {
-              detail: { continentName },
-            })
-          );
+          store.dispatch(setContinentName(continentName));
         }
       }
 
